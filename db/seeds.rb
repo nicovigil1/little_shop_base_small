@@ -7,7 +7,7 @@ Order.destroy_all
 Item.destroy_all
 User.destroy_all
 
-admin = create(:admin)
+admin = create(:admin, email: "admin", password:"admin")
 user = create(:user)
 merchant_1 = create(:merchant)
 
