@@ -28,5 +28,6 @@ RSpec.describe Discount, type: :model do
 
       it { should_not validate_presence_of :item_total }
     end
-  end 
+  end
+  
 end
