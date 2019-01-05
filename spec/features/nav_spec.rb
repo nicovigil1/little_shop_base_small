@@ -53,13 +53,15 @@ RSpec.describe 'Site Nav', type: :feature do
     allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
 
     visit root_path
-
+    
     click_link 'Profile'
     expect(current_path).to eq(profile_path)
-
-    click_link 'Orders'
-    expect(current_path).to eq(profile_orders_path)
-
+    
+    within ".navbar-collapse" do
+      click_link 'Orders'
+      expect(current_path).to eq(profile_orders_path)
+    end
+    
     click_link 'Log out'
     expect(current_path).to eq(root_path)
 
