@@ -85,11 +85,11 @@ class Order < ApplicationRecord
   end
 
   def discounts(order_item)
-    order_item.user.discounts
+    order_item.user.discounts 
   end 
 
   def find_order_items
-    Order.find(self.id).order_items
+    test = Order.find(self.id).order_items
   end
 
   def update_price_by_quantity
@@ -102,11 +102,21 @@ class Order < ApplicationRecord
     end
   end
 
+  def update_price_by_subtotal
+    find_order_items.each do |order_item|
+      subtotal = order_item.price * order_item.quantity
+      discount = discounts(order_item).where("item_total <= ?", subtotal)
+                 .order(item_total: :desc).limit(1)[0]
+      new_price = subtotal * ((100 - discount.amount_off)/100.to_d)
+      test = order_item.update(price: new_price)
+    end 
+  end 
+
   def apply_discounts(type) 
     type == "subtotal" ? "subtotal" : "quantity"
 
     if type == "subtotal"
-      require 'pry'; binding.pry
+      update_price_by_subtotal
     elsif type == "quantity"
       update_price_by_quantity
     end
