@@ -28,5 +28,88 @@ RSpec.describe Discount, type: :model do
 
       it { should_not validate_presence_of :item_total }
     end
-  end 
+  end
+
+  describe "discounts affect order item price" do
+    it 'can affect order item price based on quantity' do 
+      merchant = create(:merchant)
+      user = create(:user)
+      discount1 = create(:discount, amount_off: 5, quantity: 1..1, user: merchant)
+      discount2 = create(:discount, amount_off: 5, quantity: 2..4, user: merchant)
+      item = create(:item, user: merchant, price: 20)
+      order = create(:completed_order, user: user)            
+      order_item_1= create(:order_item, item: item, order: order, quantity:1, price:20)
+      order_item_2 = create(:order_item, item: item, order: order, quantity:4, price:20)
+      order_item_3 = create(:order_item, item: item, order: order, quantity:5, price:20)
+
+      order.apply_discounts("quantity")    
+
+      order_item_1.reload
+      order_item_2.reload 
+
+      expect(order_item_1.price).to eq(15.to_d)
+      expect(order_item_2.price).to eq(75.to_d)
+      expect(order_item_3.price).to eq(20.to_d)
+    end
+
+    it 'can affect order item price based on subtotal' do 
+      merchant = create(:merchant)
+      user = create(:user)
+      discount1 = create(:discount, amount_off: 5, quantity: nil, item_total: 25, user: merchant)
+      discount2 = create(:discount, amount_off: 10, quantity: nil, item_total: 50, user: merchant)
+      item = create(:item, user: merchant, price: 20)
+      order = create(:completed_order, user: user)            
+      order_item_1= create(:order_item, item: item, order: order, quantity:2, price:20)
+      order_item_2 = create(:order_item, item: item, order: order, quantity:4, price:20)
+      order_item_3= create(:order_item, item: item, order: order, quantity:1, price:20)
+
+      order.apply_discounts("subtotal")    
+
+      order_item_1.reload
+      order_item_2.reload 
+
+      expect(order_item_1.price).to eq(38.to_d)
+      expect(order_item_2.price).to eq(72.to_d)
+      expect(order_item_3.price).to eq(20.to_d)
+    end
+
+  end
+
+  it 'sad path - when there are no discounts' do 
+    merchant = create(:merchant)
+    user = create(:user)
+    item = create(:item, user: merchant, price: 20)
+    order = create(:completed_order, user: user)            
+    order_item_1= create(:order_item, item: item, order: order, quantity:2, price:25)
+    order_item_2 = create(:order_item, item: item, order: order, quantity:4, price:20)
+
+    order.apply_discounts("subtotal")    
+
+    order_item_1.reload
+    order_item_2.reload 
+
+    expect(order_item_1.price).to eq(25.to_d)
+    expect(order_item_2.price).to eq(20.to_d)
+  end
+
+  it 'can affect order item price based on quantity' do 
+    merchant = create(:merchant)
+    user = create(:user)
+    item = create(:item, user: merchant, price: 20)
+    order = create(:completed_order, user: user)            
+    order_item_1= create(:order_item, item: item, order: order, quantity:1, price:20)
+    order_item_2 = create(:order_item, item: item, order: order, quantity:4, price:25)
+    order_item_3 = create(:order_item, item: item, order: order, quantity:5, price:30)
+
+    order.apply_discounts("quantity")    
+
+    order_item_1.reload
+    order_item_2.reload 
+
+    expect(order_item_1.price).to eq(20.to_d)
+    expect(order_item_2.price).to eq(25.to_d)
+    expect(order_item_3.price).to eq(30.to_d)
+  end
+
+
 end
