@@ -83,4 +83,32 @@ class Order < ApplicationRecord
   def item_fulfilled?(item_id)
     order_items.where(item_id: item_id).pluck(:fulfilled).first
   end
+
+  def discounts(order_item)
+    order_item.user.discounts
+  end 
+
+  def find_order_items
+    Order.find(self.id).order_items
+  end
+
+  def update_price_by_quantity
+    find_order_items.each do |order_item|
+      discounts(order_item).each do |discount|
+        if discount.quantity.include?(order_item.quantity) && (order_item.user == discount.user)
+          order_item.update(price: ((order_item.price * order_item.quantity).to_i - discount.amount_off))
+        end
+      end
+    end
+  end
+
+  def apply_discounts(type) 
+    type == "subtotal" ? "subtotal" : "quantity"
+
+    if type == "subtotal"
+      require 'pry'; binding.pry
+    elsif type == "quantity"
+      update_price_by_quantity
+    end
+  end 
 end
