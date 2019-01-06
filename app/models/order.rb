@@ -107,14 +107,12 @@ class Order < ApplicationRecord
       subtotal = order_item.price * order_item.quantity
       discount = discounts(order_item).where("item_total <= ?", subtotal)
                  .order(item_total: :desc).limit(1)[0]
-      new_price = subtotal * ((100 - discount.amount_off)/100.to_d)
+      new_price = subtotal * ((100 - discount.amount_off)/100.to_d) if discount
       test = order_item.update(price: new_price)
     end 
   end 
 
   def apply_discounts(type) 
-    type == "subtotal" ? "subtotal" : "quantity"
-
     if type == "subtotal"
       update_price_by_subtotal
     elsif type == "quantity"
