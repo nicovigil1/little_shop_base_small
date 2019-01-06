@@ -15,14 +15,14 @@ describe "Discounts Behaviors" do
             visit dashboard_order_path(order)
 
             expect(order_item_1.price).to eq(20)
-            expect(order_item_2.price).to eq(15)
+            expect(order_item_2.price).to eq(75)
 
             within "#order_item-#{order_item_1.id}" do 
                 expect(page).to have_content(20)
             end 
 
             within "#order_item-#{order_item_2.id}" do 
-                expect(page).to have_content(15)
+                expect(page).to have_content(75)
             end 
         end
     end
