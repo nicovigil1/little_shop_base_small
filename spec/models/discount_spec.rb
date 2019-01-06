@@ -29,5 +29,21 @@ RSpec.describe Discount, type: :model do
       it { should_not validate_presence_of :item_total }
     end
   end
+
+  describe "discounts affect order item price" do
+    merchant = create(:merchant)
+    user = create(:user)
+    discount = create(:discount, amount_off: 5, quantity: 2..4, user: user)
+    item = create(:item, user: merchant, price: 20)
+    order = create(:completed_order, user: user)            
+    order_item_1= create(:order_item, item: item, order: order, quantity:1)
+    order_item_2 = create(:order_item, item: item, order: order, quantity:4)
+
+    order.apply_discounts    
+
+    expect(order_item_1.price).to eq(20)
+    expect(order_item_2.price).to eq(15)
+  end
+  
   
 end
