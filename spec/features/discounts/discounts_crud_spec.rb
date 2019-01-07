@@ -3,21 +3,32 @@ describe 'Discounts CRUD' do
     describe "Read and Create" do 
         it "can see a link to add a bulk discount" do
             merchant = create(:merchant)
-            discount = create(:discount, amount_off: 5, quantity: 2..4, user: merchant)
-            discount = create(:discount, amount_off: 10, quantity: 5..10, user: merchant)
+            merchant2 = create(:merchant)
+            discount1 = create(:discount, amount_off: 5, quantity: 2..4, user: merchant)
+            discount2 = create(:discount, amount_off: 10, quantity: 5..10, user: merchant)
+            discount3 = create(:discount, amount_off: 15, quantity: 5..10, user: merchant2)
 
             allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(merchant)
     
             visit dashboard_path
     
-            expect(page).to have_link("My Discounts")
+            expect(page).to have_content("My Discounts")
             
             click_link "My Discounts"
 
             expect(current_path).to eq(dashboard_discounts_path)
 
-            expect(page).to have_content("Amount Off: 5")
-            expect(page).to have_content("Amount Off: 10")
+            within "#discount-#{discount1.id}" do 
+                expect(page).to have_content("5")
+            end
+
+            within "#discount-#{discount2.id}" do 
+                expect(page).to have_content("10")
+            end
+
+            within ".discounts-table" do 
+                expect(page).to_not have_content("15")
+            end
             
             expect(page).to have_link("Switch to Dollars & Item Subtotal")
 
@@ -28,7 +39,7 @@ describe 'Discounts CRUD' do
             
         end
 
-        it "Create quantity based percentage discounts" do 
+        xit "Create quantity based percentage discounts" do 
             merchant = create(:merchant)
             allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(merchant)
 
