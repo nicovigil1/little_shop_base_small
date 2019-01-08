@@ -22,7 +22,7 @@ ActiveRecord::Schema.define(version: 20190107051244) do
     t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "type", default: 2
+    t.integer "kind", default: 2
     t.index ["user_id"], name: "index_discounts_on_user_id"
   end
 
