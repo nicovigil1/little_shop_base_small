@@ -65,6 +65,12 @@ class Dashboard::DiscountsController < Dashboard::BaseController
         end
     end 
 
+    def destroy
+        @discount = Discount.find(params[:id])
+        @discount.destroy
+        redirect_to dashboard_discounts_path
+    end 
+
     private 
 
     def discount_params

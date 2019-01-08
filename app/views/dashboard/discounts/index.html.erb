@@ -28,6 +28,7 @@
                     <td><%= discount.amount_off %></td>
                     <td><%= discount.quantity%></td>
                     <td><%= link_to 'Update', edit_dashboard_discount_path(discount) %></td>
+                    <td><%= link_to 'Delete', dashboard_discount_path(discount), method: :delete %></td>
                 </tr>
             <% end %>
         </tbody>
@@ -46,6 +47,7 @@
                     <td><%= discount.amount_off %></td>
                     <td><%= discount.item_total %></td>
                     <td><%= link_to 'Update', edit_dashboard_discount_path(discount) %></td>
+                    <td><%= link_to 'Delete', dashboard_discount_path(discount), method: :delete %></td>
                 </tr>
             <% end %>
         </tbody>
