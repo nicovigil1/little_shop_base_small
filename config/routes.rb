@@ -23,7 +23,10 @@ Rails.application.routes.draw do
     resources :orders, only: [:show] do
       post '/items/:id/fulfill', to: 'orders#fulfill_item', as: 'item_fulfill'
     end
-    resources :items, except: [:show]
+		resources :items, except: [:show]
+    resources :discounts, only: [:index, :new, :create]
+    put '/discounts/toggle_discount', to: "discounts#toggle_discount", as: 'toggle_discount'
+    get "/discounts/set-type", to: "discounts#set_type", as: 'set_type'
     patch '/items/:id/enable', to: 'items#enable', as: 'enable_item'
     patch '/items/:id/disable', to: 'items#disable', as: 'disable_item'
   end

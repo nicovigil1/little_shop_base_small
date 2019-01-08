@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190104184550) do
+ActiveRecord::Schema.define(version: 20190108175124) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(version: 20190104184550) do
     t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "kind", default: 2
     t.index ["user_id"], name: "index_discounts_on_user_id"
   end
 
@@ -70,6 +71,7 @@ ActiveRecord::Schema.define(version: 20190104184550) do
     t.string "zip"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "discount_type", default: 2
     t.index ["city"], name: "index_users_on_city"
     t.index ["email"], name: "index_users_on_email"
     t.index ["state"], name: "index_users_on_state"

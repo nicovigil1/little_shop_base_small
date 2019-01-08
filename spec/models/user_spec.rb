@@ -171,5 +171,16 @@ RSpec.describe User, type: :model do
         expect(@merchant.top_3_revenue_users[2].revenue).to eq(120)
       end
     end
+
+    describe "discounts" do
+      it 'can find user discounts by type' do
+        merchant = create(:merchant, discount_type: 0)
+        discount1 = create(:discount, amount_off: 12, quantity: 1..2, user:merchant, kind: 0)
+        discount2 = create(:discount, amount_off: 12, quantity: 3..4, user:merchant, kind: 1)
+
+        expect(merchant.discounts_by_type(merchant.discount_type)).to eq([discount1])
+      end 
+    end
+    
   end
 end

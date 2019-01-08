@@ -20,6 +20,7 @@ FactoryBot.define do
     sequence(:email) { |n| "merchant_#{n}@gmail.com" }
     sequence(:name) { |n| "Merchant Name #{n}" }
     role { 1 }
+    discount_type { 2 }
     active { true }
   end
   factory :inactive_merchant, parent: :user do

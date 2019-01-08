@@ -1,0 +1,54 @@
+<h1>Discounts</h1>
+<% if current_user.discount_type == 2 %>
+    <p>You have no current discounts</p>
+<% elsif current_user.discount_type == 1 %>
+<p>Discounts are currently based off dollars & subtotals</p>
+<p>
+    To switch to percentage based discounts:
+    <%= button_to 'click here', dashboard_toggle_discount_path, method: :put %>
+</p>
+<% elsif current_user.discount_type == 0 %>
+<p>Discounts are currently based off percentages & quantities</p>
+<p>
+    To switch to dollar based discounts:
+    <%= button_to 'click here', dashboard_toggle_discount_path, method: :put %>
+</p>
+<% end %>
+
+<% if current_user.discount_type == 0%>
+    <table class="discounts-table">
+        <thead>
+            <th>Amount Off</th>
+            <th>Quantity Required</th>
+            <th>Item Total</th>
+        </thead>
+        <tbody class="discounts">
+            <% @discounts.each do |discount| %>
+                <tr id=<%= "discount-#{discount.id}" %>>
+                    <td><%= discount.amount_off %></td>
+                    <td><%= discount.quantity%></td>
+                    <td><%= discount.item_total %></td>
+                </tr>
+            <% end %>
+        </tbody>
+    </table>
+<% elsif current_user.discount_type == 1 %>
+    <table class="discounts-table">
+        <thead>
+            <th>Amount Off</th>
+            <th>Quantity Required</th>
+            <th>Item Total</th>
+        </thead>
+
+        <tbody class="discounts">
+            <% @discounts.each do |discount| %>
+                <tr id=<%= "discount-#{discount.id}" %>>
+                    <td><%= discount.amount_off %></td>
+                    <td><%= discount.item_total %></td>
+                </tr>
+            <% end %>
+        </tbody>
+    </table>
+<% end %>
+
+<%= link_to 'Add Discount', new_dashboard_discount_path %>

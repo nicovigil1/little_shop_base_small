@@ -12,7 +12,9 @@
 <%= link_to 'My Items', admin_merchant_items_path(@merchant) %>
 <% else %>
 <%= link_to 'My Items', dashboard_items_path %>
+<%= link_to 'My Discounts', dashboard_discounts_path %>
 <% end %>
+
 
 <% if current_admin? %>
 <%= button_to "Downgrade to User", admin_merchant_downgrade_path(@merchant) %>
