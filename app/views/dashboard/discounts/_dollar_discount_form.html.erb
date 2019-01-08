@@ -1,0 +1,13 @@
+<h1>Add a discount!</h1>
+
+<%= form_for [:dashboard, @discount] do |f| %>
+<%= f.label :amount_off, "Discount (in Dollars off)" %>
+<%= f.number_field :amount_off %>
+<%= f.label :item_total, "Item Subtotal" %>
+<%= f.number_field :item_total %>
+<%= f.submit %>
+<% end %>
+
+
+<p>to switch to percentage based discounts click the below button:</p>
+<%= button_to "Percentage based off Item Quantity", dashboard_toggle_discount_path, method: :put  %>
