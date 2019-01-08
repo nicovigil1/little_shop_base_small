@@ -113,4 +113,8 @@ class User < ApplicationRecord
       .order('revenue desc')
       .limit(3)
   end
+
+  def discounts_by_type(type)
+    discounts.where("kind = ?", type)
+  end 
 end
