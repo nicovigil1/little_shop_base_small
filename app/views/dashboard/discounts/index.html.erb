@@ -5,13 +5,13 @@
 <p>Discounts are currently based off dollars & subtotals</p>
 <p>
     To switch to percentage based discounts:
-    <%= button_to 'click here', dashboard_toggle_discount_path, method: :put %>
+    <%= button_to 'click here', dashboard_toggle_discount_path, method: :post %>
 </p>
 <% elsif current_user.discount_type == 0 %>
 <p>Discounts are currently based off percentages & quantities</p>
 <p>
     To switch to dollar based discounts:
-    <%= button_to 'click here', dashboard_toggle_discount_path, method: :put %>
+    <%= button_to 'click here', dashboard_toggle_discount_path, method: :post %>
 </p>
 <% end %>
 
@@ -20,14 +20,14 @@
         <thead>
             <th>Amount Off</th>
             <th>Quantity Required</th>
-            <th>Item Total</th>
+            <th>Update</th>
         </thead>
         <tbody class="discounts">
             <% @discounts.each do |discount| %>
                 <tr id=<%= "discount-#{discount.id}" %>>
                     <td><%= discount.amount_off %></td>
                     <td><%= discount.quantity%></td>
-                    <td><%= discount.item_total %></td>
+                    <td><%= link_to 'Update', edit_dashboard_discount_path(discount) %></td>
                 </tr>
             <% end %>
         </tbody>
@@ -36,8 +36,8 @@
     <table class="discounts-table">
         <thead>
             <th>Amount Off</th>
-            <th>Quantity Required</th>
             <th>Item Total</th>
+            <th>Update</th>
         </thead>
 
         <tbody class="discounts">
@@ -45,6 +45,7 @@
                 <tr id=<%= "discount-#{discount.id}" %>>
                     <td><%= discount.amount_off %></td>
                     <td><%= discount.item_total %></td>
+                    <td><%= link_to 'Update', edit_dashboard_discount_path(discount) %></td>
                 </tr>
             <% end %>
         </tbody>
