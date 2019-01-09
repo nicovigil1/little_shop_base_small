@@ -19,7 +19,7 @@ RSpec.describe 'Cart workflow', type: :feature do
     end
     after :each do
       expect(page).to have_content('Your cart is empty')
-      expect(page).to_not have_button('Emtpy cart')
+      expect(page).to_not have_button('Empty cart')
     end
   end
 
@@ -198,7 +198,7 @@ RSpec.describe 'Cart workflow', type: :feature do
 
       visit item_path(@item)
 
-      expect(page).to_not have_button("Add to cart")
+      expect(page).to_not have_button("Add to Cart")
     end
   end
 
@@ -209,7 +209,7 @@ RSpec.describe 'Cart workflow', type: :feature do
 
       visit item_path(@item)
 
-      expect(page).to_not have_button("Add to cart")
+      expect(page).to_not have_button("Add to Cart")
     end
   end
 end
