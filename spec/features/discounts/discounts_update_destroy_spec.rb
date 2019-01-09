@@ -23,7 +23,7 @@ describe "As a merchant" do
       click_button "Update Discount"
 
       expect(current_path).to  eq(dashboard_discounts_path)
-      save_and_open_page
+
       within("#discount-#{discount.id}") do 
         expect(page).to have_content(42)
       end
