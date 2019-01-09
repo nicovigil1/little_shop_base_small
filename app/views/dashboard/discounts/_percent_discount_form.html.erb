@@ -1,15 +1,22 @@
 <h1>Add a discount!</h1>
-<%= form_for [:dashboard, @discount] do |f| %>
+<%= form_for @form_path do |f| %>
 <%= f.label :amount_off, "Discount (in Percentage)" %>
 <%= f.number_field :amount_off %>
+<% if params[:autofill] %>
+<%= label_tag("discount[min_quantity]", "Min. Quantity") %>
+<%= number_field_tag("discount[min_quantity]", params[:discount][:min_quantity]) %>
+<%= label_tag("discount[max_quantity]", "Max. Quantity") %>
+<%= number_field_tag("discount[max_quantity]", params[:discount][:max_quantity]) %>
+<% else %>
 <%= label_tag("discount[min_quantity]", "Min. Quantity") %>
 <%= number_field_tag("discount[min_quantity]") %>
 <%= label_tag("discount[max_quantity]", "Max. Quantity") %>
 <%= number_field_tag("discount[max_quantity]") %>
+<% end %>
 <%= f.submit %>
 <% end %>
 
 <p>to switch to dollar based discounts click the below button:</p>
 <% #fixme - params passed into pathhelper to allow for rendering of the new action %>
-<%= button_to "Dollars based off Item Subtotal", dashboard_toggle_discount_path, method: :put %>
+<%= button_to "Dollars based off Item Subtotal", dashboard_toggle_discount_path, method: :post %>
 

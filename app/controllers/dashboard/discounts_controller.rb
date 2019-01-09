@@ -6,6 +6,7 @@ class Dashboard::DiscountsController < Dashboard::BaseController
 
     def new
         @discount = Discount.new
+        @form_path = [:dashboard, @discount]
         params[:discount] ? set_discount_type_session(params[:discount]) : nil
         if current_user.discount_type == 2 && session[:discount_type] == nil
             redirect_to dashboard_set_type_path
@@ -41,6 +42,35 @@ class Dashboard::DiscountsController < Dashboard::BaseController
         redirect_to dashboard_discounts_path
     end
 
+    def edit
+        @discount = Discount.find(params[:id])
+        @form_path = [:dashboard, @discount]
+        if discount_type(0)
+            autofill_min_max 
+            render partial: 'dashboard/discounts/percent_discount_form', layout: "application"
+        elsif discount_type(1)
+            render partial: 'dashboard/discounts/dollar_discount_form', layout: "application"
+        end
+    end 
+
+    def update
+        @discount = Discount.find(params[:id]) 
+        @discount.update(discount_params)
+        # @updated_discount.kind = current_user.discount_type
+        if @discount.save
+            redirect_to dashboard_discounts_path
+        else
+            flash[:error] = @updated_discount.errors.full_messages
+            edit
+        end
+    end 
+
+    def destroy
+        @discount = Discount.find(params[:id])
+        @discount.destroy
+        redirect_to dashboard_discounts_path
+    end 
+
     private 
 
     def discount_params
@@ -71,4 +101,11 @@ class Dashboard::DiscountsController < Dashboard::BaseController
     def discount_type(type)
         session[:discount_type] == type || current_user.discount_type == type
     end 
+
+    def autofill_min_max
+        min = @discount.quantity.to_a.first
+        max = @discount.quantity.to_a.last + 1
+        params[:autofill] = 123
+        params[:discount] = {min_quantity: min, max_quantity: max}
+    end
 end 
