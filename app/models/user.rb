@@ -117,4 +117,16 @@ class User < ApplicationRecord
   def discounts_by_type(type)
     discounts.where("kind = ?", type)
   end 
+
+  def no_thumbnail
+    items.where('items.image = ?', 'https://picsum.photos/200/300/?image=524')
+  end 
+
+  def unfulfilled_orders_count
+    my_pending_orders.count
+  end 
+
+  def unfulfilled_orders_revenue
+    my_pending_orders.sum("order_items.quantity * order_items.price")
+  end
 end

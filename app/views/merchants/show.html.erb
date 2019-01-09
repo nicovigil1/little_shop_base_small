@@ -13,6 +13,19 @@
 <% else %>
 <%= link_to 'My Items', dashboard_items_path %>
 <%= link_to 'My Discounts', dashboard_discounts_path %>
+<div id="to-do">
+  <ul>
+    <% @no_thumbnails.each do |image| %>
+        <li>
+      <%= link_to image.name, edit_dashboard_item_path(image) %>
+        </li>
+    <% end %>
+  </ul>
+
+  <div id="to-do-fulfilled">
+    <%= "You have #{@unfulfilled_count} unfulfilled orders worth #{number_to_currency(@unfulfilled_revenue)}" %>
+  </div>
+</div>
 <% end %>
 
 

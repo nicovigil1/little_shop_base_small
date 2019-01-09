@@ -27,6 +27,9 @@ class MerchantsController < ApplicationController
     @most_items_user = @merchant.most_items_user
     @most_items_user = @merchant.most_items_user
     @top_3_revenue_users = @merchant.top_3_revenue_users
+    @no_thumbnails = current_user.no_thumbnail
+    @unfulfilled_count = current_user.unfulfilled_orders_count
+    @unfulfilled_revenue = current_user.unfulfilled_orders_revenue
   end
 
   private

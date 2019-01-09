@@ -110,6 +110,4 @@ RSpec.describe Discount, type: :model do
     expect(order_item_2.price).to eq(25.to_d)
     expect(order_item_3.price).to eq(30.to_d)
   end
-
-
 end
